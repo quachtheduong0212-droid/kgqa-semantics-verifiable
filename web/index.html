@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Concept Path Explorer — Explainable KGQA</title>
+  <meta
+    name="description"
+    content="Explore concept relationships in the CSO knowledge graph using BFS, DFS, Dijkstra, and A* algorithms. A transparent, graph-algorithm-based concept retrieval prototype."
+  />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="app-container">
+
+    <!-- ============================================================ -->
+    <!--  HEADER                                                       -->
+    <!-- ============================================================ -->
+    <header class="app-header">
+      <h1>Concept <span class="accent">Path</span> Explorer ✦</h1>
+      <p class="subtitle">
+        Explainable KGQA · Classical Graph Algorithms · CSO Ontology
+      </p>
+      <div id="demo-badge" class="demo-badge">✦ Demo Mode — using sample data</div>
+    </header>
+
+    <!-- ============================================================ -->
+    <!--  QUERY BAR                                                    -->
+    <!-- ============================================================ -->
+    <section class="query-section">
+      <div class="query-bar">
+        <input
+          id="query-input"
+          class="query-input"
+          type="text"
+          placeholder="e.g. How is Data Mining related to Random Forests?"
+          autocomplete="off"
+          spellcheck="false"
+        />
+        <select id="algo-select" class="algo-select" title="Select graph algorithm">
+          <option value="dijkstra">✦ Dijkstra</option>
+          <option value="astar">✦ A*</option>
+          <option value="bfs">✦ BFS</option>
+          <option value="dfs">✦ DFS</option>
+        </select>
+        <button id="search-btn" class="search-btn">
+          <span class="icon">✦</span> Search
+        </button>
+      </div>
+
+      <div class="example-queries">
+        <span class="label">Try:</span>
+        <button
+          class="example-btn"
+          data-query="How is Data Mining related to Random Forests?"
+        >
+          Data Mining → Random Forests
+        </button>
+        <button
+          class="example-btn"
+          data-query="How is Machine Learning related to Deep Learning?"
+        >
+          Machine Learning → Deep Learning
+        </button>
+        <button
+          class="example-btn"
+          data-query="How is Data Mining related to Classification?"
+        >
+          Data Mining → Classification
+        </button>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!--  ERROR DISPLAY                                                -->
+    <!-- ============================================================ -->
+    <div id="error-display" class="error-display"></div>
+
+    <!-- ============================================================ -->
+    <!--  LOADING                                                      -->
+    <!-- ============================================================ -->
+    <div id="loading-overlay" class="loading-overlay">
+      <div class="spinner"></div>
+      <span class="loading-text">Finding concept path…</span>
+    </div>
+
+    <!-- ============================================================ -->
+    <!--  RESULT AREA (two-column)                                     -->
+    <!-- ============================================================ -->
+    <div id="result-area" class="result-area">
+
+      <!-- LEFT COLUMN: path + explanation + comparison -->
+      <div class="main-column">
+
+        <!-- Path card -->
+        <div id="path-card" class="card">
+          <div class="card-title"><span class="icon">✦</span> Concept Path</div>
+          <div id="path-chain" class="path-chain"></div>
+          <div id="path-explanation" class="path-explanation"></div>
+        </div>
+
+        <!-- Compare toggle -->
+        <button id="compare-toggle" class="compare-toggle">
+          ⇆ Compare All Algorithms
+        </button>
+
+        <!-- Comparison table -->
+        <div id="comparison-section" class="comparison-section">
+          <div class="card">
+            <div class="card-title"><span class="icon">✦</span> Algorithm Comparison</div>
+            <table class="comparison-table">
+              <thead>
+                <tr>
+                  <th>Algorithm</th>
+                  <th>Path</th>
+                  <th>Cost</th>
+                  <th>Visited</th>
+                  <th>Time</th>
+                </tr>
+              </thead>
+              <tbody id="comparison-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN: metrics + related concepts -->
+      <aside class="sidebar">
+
+        <!-- Metrics card -->
+        <div class="card">
+          <div class="card-title"><span class="icon">✦</span> Algorithm Metrics</div>
+          <div id="metrics-grid" class="metric-grid"></div>
+        </div>
+
+        <!-- Related concepts card -->
+        <div class="card">
+          <div class="card-title"><span class="icon">✦</span> Related Concepts</div>
+          <div id="related-concepts" class="concept-chips"></div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- ============================================================ -->
+    <!--  FOOTER                                                       -->
+    <!-- ============================================================ -->
+    <footer class="app-footer">
+      <div id="graph-stats" class="graph-stats">Loading graph info…</div>
+      <div class="attribution">
+        Knowledge source: Computer Science Ontology (CSO) v3.5 · Topic-level concepts only
+      </div>
+    </footer>
+  </div>
+
+  <!-- Scripts: order matters (mock → api → app) -->
+  <script src="js/mock_data.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

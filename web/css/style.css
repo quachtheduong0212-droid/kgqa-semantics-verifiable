@@ -1,0 +1,749 @@
+/* ================================================================== */
+/*  KGQA Concept Path Explorer — Light Mint Theme                     */
+/*  Clean, friendly, habit-tracker aesthetic                          */
+/* ================================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap");
+
+/* ------------------------------------------------------------------
+   1. Design tokens
+   ------------------------------------------------------------------ */
+:root {
+  /* Surfaces */
+  --bg-primary: #f7f9fc;
+  --bg-card: #ffffff;
+  --bg-input: #f0f4f8;
+  --bg-sidebar: #ffffff;
+
+  /* Mint accent palette */
+  --mint-100: #e6faf5;
+  --mint-200: #b8f0e1;
+  --mint-400: #3dd6a3;
+  --mint-500: #1ec994;
+  --mint-600: #17a87c;
+  --mint-glow: rgba(61, 214, 163, 0.15);
+  --mint-glow-strong: rgba(61, 214, 163, 0.25);
+
+  /* Pastel accents */
+  --pastel-blue: #dbeafe;
+  --pastel-purple: #ede9fe;
+  --pastel-peach: #fde8d8;
+  --pastel-yellow: #fef9c3;
+
+  /* Text */
+  --text-primary: #1a202c;
+  --text-secondary: #4a5568;
+  --text-muted: #a0aec0;
+  --text-placeholder: #cbd5e0;
+
+  /* Borders */
+  --border-light: #e8edf5;
+  --border-mint: rgba(61, 214, 163, 0.35);
+
+  /* Status */
+  --error-bg: #fff5f5;
+  --error-border: #fed7d7;
+  --error-text: #c53030;
+  --demo-bg: #fffbeb;
+  --demo-border: #fcd34d;
+  --demo-text: #92400e;
+
+  /* Dimensions */
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-full: 999px;
+
+  /* Shadows — soft, layered */
+  --shadow-xs: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-mint: 0 4px 16px rgba(61, 214, 163, 0.2);
+
+  /* Transitions */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ------------------------------------------------------------------
+   2. Reset & base
+   ------------------------------------------------------------------ */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 15px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Nunito", system-ui, -apple-system, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Subtle dot pattern */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(circle at 1px 1px, rgba(61, 214, 163, 0.07) 1px, transparent 0);
+  background-size: 28px 28px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ------------------------------------------------------------------
+   3. Layout
+   ------------------------------------------------------------------ */
+.app-container {
+  position: relative;
+  z-index: 1;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 3rem;
+}
+
+/* ------------------------------------------------------------------
+   4. Header
+   ------------------------------------------------------------------ */
+.app-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.app-header h1 {
+  font-size: 2rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin-bottom: 0.3rem;
+}
+
+.app-header h1 .accent {
+  color: var(--mint-500);
+}
+
+.app-header .subtitle {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* Demo badge */
+.demo-badge {
+  display: none;
+  margin: 0.75rem auto 0;
+  padding: 0.3rem 1rem;
+  font-size: 0.73rem;
+  font-weight: 700;
+  color: var(--demo-text);
+  background: var(--demo-bg);
+  border: 1.5px solid var(--demo-border);
+  border-radius: var(--radius-full);
+  width: fit-content;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.demo-badge.visible {
+  display: block;
+}
+
+/* ------------------------------------------------------------------
+   5. Query section
+   ------------------------------------------------------------------ */
+.query-section {
+  margin-bottom: 1.75rem;
+}
+
+.query-bar {
+  display: flex;
+  gap: 0.5rem;
+  align-items: stretch;
+  background: var(--bg-card);
+  padding: 0.5rem;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  border: 1.5px solid var(--border-light);
+}
+
+.query-input {
+  flex: 1;
+  padding: 0.65rem 0.9rem;
+  font-size: 0.93rem;
+  font-family: "Nunito", sans-serif;
+  font-weight: 500;
+  color: var(--text-primary);
+  background: var(--bg-input);
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-lg);
+  outline: none;
+  transition: border-color 0.2s var(--ease-out), background 0.2s;
+}
+
+.query-input::placeholder {
+  color: var(--text-placeholder);
+}
+
+.query-input:focus {
+  background: #fff;
+  border-color: var(--mint-400);
+  box-shadow: 0 0 0 3px var(--mint-glow);
+}
+
+.algo-select {
+  padding: 0.65rem 0.85rem;
+  font-size: 0.83rem;
+  font-family: "Nunito", sans-serif;
+  font-weight: 700;
+  color: var(--text-secondary);
+  background: var(--bg-input);
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s;
+  min-width: 115px;
+}
+
+.algo-select:focus {
+  border-color: var(--mint-400);
+}
+
+.search-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.65rem 1.4rem;
+  font-size: 0.9rem;
+  font-weight: 800;
+  font-family: "Nunito", sans-serif;
+  color: #fff;
+  background: linear-gradient(135deg, var(--mint-400), var(--mint-600));
+  border: none;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: transform 0.2s var(--ease-spring), box-shadow 0.2s;
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+}
+
+.search-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: var(--shadow-mint);
+}
+
+.search-btn:active {
+  transform: scale(0.98);
+}
+
+.search-btn .icon {
+  font-size: 1rem;
+}
+
+/* Example queries */
+.example-queries {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+  padding: 0 0.25rem;
+}
+
+.example-queries .label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.example-btn {
+  padding: 0.28rem 0.7rem;
+  font-size: 0.75rem;
+  font-family: "Nunito", sans-serif;
+  font-weight: 700;
+  color: var(--mint-600);
+  background: var(--mint-100);
+  border: 1.5px solid var(--mint-200);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s var(--ease-spring);
+  white-space: nowrap;
+}
+
+.example-btn:hover {
+  background: var(--mint-200);
+  transform: translateY(-1px);
+}
+
+/* ------------------------------------------------------------------
+   6. Result area
+   ------------------------------------------------------------------ */
+.result-area {
+  display: none;
+  gap: 1.25rem;
+}
+
+.result-area.visible {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+}
+
+/* ------------------------------------------------------------------
+   7. Cards
+   ------------------------------------------------------------------ */
+.card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 1.4rem;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--mint-200);
+}
+
+.card-title {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.card-title .icon {
+  font-size: 0.9rem;
+}
+
+/* ------------------------------------------------------------------
+   8. Path display
+   ------------------------------------------------------------------ */
+.path-chain {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 1.25rem;
+}
+
+.path-node {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.45rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  background: var(--bg-input);
+  border: 2px solid var(--border-light);
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+  box-shadow: var(--shadow-xs);
+  animation: nodeAppear 0.5s var(--ease-spring) both;
+  transition: transform 0.15s;
+}
+
+.path-node:hover {
+  transform: translateY(-2px);
+}
+
+/* Source node — mint */
+.path-node:first-child {
+  background: var(--mint-100);
+  border-color: var(--mint-400);
+  color: var(--mint-600);
+}
+
+/* Target node — soft purple */
+.path-node:last-child {
+  background: var(--pastel-purple);
+  border-color: #c4b5fd;
+  color: #5b21b6;
+}
+
+/* Middle nodes */
+.path-node:not(:first-child):not(:last-child) {
+  background: var(--pastel-blue);
+  border-color: #93c5fd;
+  color: #1d4ed8;
+}
+
+.path-arrow {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  font-weight: 700;
+  animation: nodeAppear 0.3s var(--ease-out) both;
+}
+
+@keyframes nodeAppear {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.92);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Explanation */
+.path-explanation {
+  font-size: 0.88rem;
+  line-height: 1.75;
+  color: var(--text-secondary);
+}
+
+.path-explanation .sentence {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 0.35rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-sm);
+  background: var(--bg-primary);
+}
+
+.path-explanation .sentence::before {
+  content: "✦";
+  color: var(--mint-400);
+  font-size: 0.75rem;
+  flex-shrink: 0;
+  margin-top: 0.2rem;
+}
+
+/* ------------------------------------------------------------------
+   9. Sidebar cards
+   ------------------------------------------------------------------ */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Metrics */
+.metric-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+
+.metric-item {
+  background: var(--bg-primary);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 0.9rem;
+  border: 1.5px solid var(--border-light);
+  transition: border-color 0.15s, transform 0.15s;
+}
+
+.metric-item:hover {
+  border-color: var(--mint-200);
+  transform: translateY(-1px);
+}
+
+.metric-label {
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.25rem;
+}
+
+.metric-value {
+  font-size: 1.2rem;
+  font-weight: 900;
+  font-family: "JetBrains Mono", monospace;
+  color: var(--text-primary);
+}
+
+.metric-value.cost {
+  color: var(--mint-500);
+}
+
+.metric-value.time {
+  color: #f59e0b;
+}
+
+.metric-value.direction {
+  color: #7c3aed;
+  font-size: 0.88rem;
+  font-family: "Nunito", sans-serif;
+  font-weight: 800;
+  text-transform: capitalize;
+}
+
+/* Related concepts */
+.concept-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.concept-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.32rem 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  font-family: "Nunito", sans-serif;
+  color: var(--text-secondary);
+  background: var(--bg-primary);
+  border: 1.5px solid var(--border-light);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all 0.18s var(--ease-spring);
+}
+
+.concept-chip:hover {
+  color: var(--mint-600);
+  border-color: var(--mint-400);
+  background: var(--mint-100);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-xs);
+}
+
+.concept-chip .edge-icon {
+  font-size: 0.72rem;
+  color: var(--mint-400);
+}
+
+/* ------------------------------------------------------------------
+   10. Comparison table
+   ------------------------------------------------------------------ */
+.comparison-section {
+  margin-top: 1.25rem;
+  display: none;
+}
+
+.comparison-section.visible {
+  display: block;
+}
+
+.compare-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 10px;
+  margin-bottom: 1rem;
+  padding: 0.5rem 1.1rem;
+  font-size: 0.8rem;
+  font-weight: 800;
+  font-family: "Nunito", sans-serif;
+  color: #7c3aed;
+  background: var(--pastel-purple);
+  border: 1.5px solid #c4b5fd;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all 0.18s var(--ease-spring);
+}
+
+.compare-toggle:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.15);
+}
+
+.compare-toggle.active {
+  background: #7c3aed;
+  color: #fff;
+  border-color: #7c3aed;
+}
+
+.comparison-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.83rem;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1.5px solid var(--border-light);
+}
+
+.comparison-table thead th {
+  background: var(--bg-primary);
+  padding: 0.7rem 1rem;
+  text-align: left;
+  font-weight: 800;
+  font-size: 0.68rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border-bottom: 1.5px solid var(--border-light);
+}
+
+.comparison-table tbody td {
+  padding: 0.65rem 1rem;
+  border-bottom: 1px solid var(--border-light);
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.comparison-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.comparison-table tbody tr:hover {
+  background: var(--bg-primary);
+}
+
+.comparison-table .algo-name {
+  font-weight: 900;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  font-size: 0.78rem;
+}
+
+.comparison-table .path-col {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.76rem;
+  color: var(--mint-600);
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.comparison-table .num-col {
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 700;
+}
+
+.best-value {
+  color: var(--mint-500) !important;
+  font-weight: 900 !important;
+}
+
+/* ------------------------------------------------------------------
+   11. Error display
+   ------------------------------------------------------------------ */
+.error-display {
+  display: none;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+  background: var(--error-bg);
+  border: 1.5px solid var(--error-border);
+  border-radius: var(--radius-md);
+  color: var(--error-text);
+  font-size: 0.88rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.error-display.visible {
+  display: block;
+  animation: nodeAppear 0.3s var(--ease-out);
+}
+
+/* ------------------------------------------------------------------
+   12. Footer
+   ------------------------------------------------------------------ */
+.app-footer {
+  margin-top: 2.5rem;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  padding-top: 1rem;
+  border-top: 1.5px solid var(--border-light);
+}
+
+.app-footer .graph-stats {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.app-footer .attribution {
+  margin-top: 0.3rem;
+}
+
+/* ------------------------------------------------------------------
+   13. Loading spinner
+   ------------------------------------------------------------------ */
+.loading-overlay {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 3rem 0;
+}
+
+.loading-overlay.visible {
+  display: flex;
+}
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--mint-100);
+  border-top-color: var(--mint-400);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+.loading-overlay .loading-text {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ------------------------------------------------------------------
+   14. Responsive
+   ------------------------------------------------------------------ */
+@media (max-width: 860px) {
+  .result-area.visible {
+    grid-template-columns: 1fr;
+  }
+
+  .query-bar {
+    flex-wrap: wrap;
+  }
+
+  .query-input {
+    min-width: 100%;
+  }
+
+  .algo-select,
+  .search-btn {
+    flex: 1;
+  }
+
+  .app-header h1 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-container {
+    padding: 1rem 0.75rem 2rem;
+  }
+
+  .metric-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
