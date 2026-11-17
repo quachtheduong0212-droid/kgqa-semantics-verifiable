@@ -18,3 +18,14 @@ __pycache__/
 
 # Study Materials
 docs/study_materials/
+
+# Local Python environment and credentials
+.venv/
+.env
+.env.*
+!.env.example
+*.log
+
+# Local research caches
+.pytest_cache/
+.ipynb_checkpoints/

@@ -1,99 +1,59 @@
-# Explainable KGQA with Classical Graph Algorithms
+# Semantics-Aware and Verifiable Path-Based Academic KGQA
 
-This project supports the paper **"Applying Graph Algorithms to Knowledge Graph
-Construction for Academic Question-Answering Systems"**.
+Repository riêng cho nghiên cứu mở rộng từ bài FISAT 2026:
+**Semantics-Aware and Verifiable Path-Based Academic Knowledge Graph Question Answering**.
 
-The goal is to build a lightweight end-to-end KGQA prototype where a user
-question is converted into a graph pathfinding task. The returned path is used
-as both the answer and the explanation.
+**Trạng thái:** khởi tạo nghiên cứu từ baseline hiện có. Các thành phần mở rộng bên dưới là kế hoạch; repo chưa có kết quả thực nghiệm mới cho bản journal.
 
-## Research Scope
+## Tài liệu và nguồn gốc
 
-- Knowledge source: Computer Science Ontology (CSO)
-- Graph library: NetworkX
-- Core algorithms: BFS, DFS, Dijkstra, and A*
-- QA type: concept-level relationship questions
-- Main output: an explainable path between academic concepts
+- [Đề cương nghiên cứu (bản chụp ngày 17/11/2026)](docs/research-proposal.md)
+- [Google Docs gốc](https://docs.google.com/document/d/17LCqOgPWKeyUc9AfMtwo1iW9Ionzu0XfaPtBWEdBn6Q/edit?tab=t.0)
+- [Repository baseline](https://github.com/egbertbritannia-cpu/kgqa_graph_algorithms)
+- [README baseline được lưu lại](docs/baseline-readme.md)
+- Baseline commit: 506e4e22b2069b78dc0354336dca576cb2cd4e39
+- Bài nền theo đề cương: *A Lightweight Path-Based Framework for Academic Knowledge Graph Question Answering*.
 
-This version intentionally avoids LLMs, embeddings, and heavy NLP models so the
-paper can isolate the behavior of classical graph algorithms. LLMs or knowledge
-graph embeddings can be proposed later as future extensions.
+Repo giữ lịch sử commit của baseline. Remote `upstream` trỏ về repo nền; remote `origin` trỏ về repo mở rộng. Bản khởi tạo lấy các file đã commit ở baseline; dữ liệu cục bộ và các file chưa được theo dõi không nằm trong bản khởi tạo.
 
-## Project Structure
+## Phạm vi mở rộng
 
-```text
-kgqa_graph_algorithms/
-├── main.py                     # End-to-end CLI QA demo
-├── test_run.py                 # Algorithm comparison on one sample query
-├── src/
-│   ├── data_loader.py          # Load CSO triples
-│   ├── graph_builder.py        # Build a NetworkX graph
-│   ├── graph_pruner.py         # Extract a smaller subgraph from one root
-│   ├── algorithms/             # BFS, DFS, Dijkstra, A*, heuristics
-│   └── qa/                     # Query parser, QA engine, path verbalizer
-├── data/
-│   ├── raw/                    # Local CSO data, ignored by git
-│   └── processed/              # Local pruned graphs, ignored by git
-└── docs/study_materials/        # Research notes and study documents
+1. Question understanding và entity linking cho câu hỏi ngôn ngữ tự nhiên.
+2. Kiểm chứng ngữ nghĩa của quan hệ và path composition; trả về evidence triples.
+3. Candidate path ranking có xét ngữ nghĩa và cơ chế abstention khi thiếu bằng chứng.
+4. Bộ đánh giá QA dự kiến 200–300 câu hỏi, có gold answers/evidence, paraphrase, ambiguity và no-answer.
+5. So sánh baseline, ablation, sensitivity, scalability, human evaluation và latency toàn pipeline.
+
+Graph-valid path chưa đồng nghĩa với câu trả lời được hỗ trợ về ngữ nghĩa. Novelty và cải thiện chất lượng cần được kiểm chứng; không mặc định các thành phần dự kiến đã hoạt động.
+
+## Bố cục
+
+- `src/`, `main.py`: code baseline được kế thừa, gồm BFS, DFS, Dijkstra, A*, parser và verbalizer.
+- `web/`: giao diện demo baseline.
+- `docs/`: đề cương và tài liệu nguồn gốc.
+- `manuscript/`: dành cho bản thảo mở rộng.
+- `data/raw/`, `data/processed/`: dữ liệu cục bộ, được bỏ qua bởi Git.
+
+## Chạy baseline
+
+Yêu cầu Python 3 và dữ liệu CSO cục bộ. Repo không kèm dữ liệu CSO.
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+
+# Đặt CSO.3.5.csv trong data/raw/ trước khi chạy:
+.\.venv\Scripts\python.exe src/graph_pruner.py --root data_mining --max-depth 5 --output data/processed/subgraph_data_mining.json
+.\.venv\Scripts\python.exe main.py --graph data/processed/subgraph_data_mining.json --question "How is Data Mining related to Random Forests?" --algorithm dijkstra
 ```
 
-## Run the End-to-End Demo
+Đây là cách chạy prototype baseline; benchmark và phương pháp mới chưa được triển khai.
 
-Use the local virtual environment:
+## Việc cần làm trước
 
-```bash
-.\.venv\Scripts\python.exe main.py --question "How is Data Mining related to Random Forests?" --algorithm dijkstra
-```
-
-Expected path:
-
-```text
-Data Mining -> Decision Tree -> Random Forests
-```
-
-You can also run the interactive CLI:
-
-```bash
-.\.venv\Scripts\python.exe main.py
-```
-
-Supported algorithms:
-
-```text
-bfs, dfs, dijkstra, astar
-```
-
-## Build a Pruned Subgraph
-
-The current test graph uses `data_mining`, but the root can be changed for
-experiments. In the local CSO file, `artificial_intelligence` exists, while the
-exact node ID `data_science` was not found; use `data_mining` as the closest
-data-oriented root unless a different CSO version contains `data_science`.
-
-```bash
-.\.venv\Scripts\python.exe src\graph_pruner.py --root artificial_intelligence --max-depth 4 --output data\processed\subgraph_ai.json
-```
-
-Then run QA on that graph:
-
-```bash
-.\.venv\Scripts\python.exe main.py --graph data\processed\subgraph_ai.json --question "How is Machine Learning related to Deep Learning?" --algorithm astar
-```
-
-## Compare Algorithms
-
-```bash
-.\.venv\Scripts\python.exe test_run.py
-```
-
-This prints the path, cost, runtime, and number of visited nodes for BFS, DFS,
-Dijkstra, and A*. It also verifies the custom Dijkstra result against NetworkX.
-
-## Paper-Oriented Notes
-
-- BFS is useful for the shortest path by hop count.
-- DFS is useful for exploration but does not guarantee the shortest path.
-- Dijkstra is useful for weighted semantic distance.
-- A* uses a simple depth-based heuristic to reduce search effort while keeping
-  the reasoning process explainable.
-- The path verbalizer turns graph edges into readable English explanations.
+- [ ] Xác minh prior art và lập bảng đối chiếu novelty.
+- [ ] Chốt task, schema câu hỏi, annotation rubric và cách chia development/test.
+- [ ] Tái lập baseline end-to-end trên tập pilot.
+- [ ] Triển khai linking, path validation/ranking và abstention.
+- [ ] Chạy đánh giá có đối chứng, ablation và human evaluation.
+- [ ] Viết bản thảo, bảng phần đóng góp mới so với hội nghị và hướng dẫn tái lập.
