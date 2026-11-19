@@ -7,6 +7,9 @@ Repository riêng cho nghiên cứu mở rộng từ bài FISAT 2026:
 
 ## Tài liệu và nguồn gốc
 
+- [Theo dõi Week 6–7: tiến độ, đầu ra và bằng chứng](team-synthesis/week6-week7-tracker.md)
+- [Danh mục nguồn nghiên cứu](team-synthesis/source-register.md)
+- [Nhật ký quyết định và thay đổi](team-synthesis/decision-log.md)
 - [Đề cương nghiên cứu (bản chụp ngày 17/11/2026)](docs/research-proposal.md)
 - [Google Docs gốc](https://docs.google.com/document/d/17LCqOgPWKeyUc9AfMtwo1iW9Ionzu0XfaPtBWEdBn6Q/edit?tab=t.0)
 - [Repository baseline](https://github.com/egbertbritannia-cpu/kgqa_graph_algorithms)
@@ -15,6 +18,12 @@ Repository riêng cho nghiên cứu mở rộng từ bài FISAT 2026:
 - Bài nền theo đề cương: *A Lightweight Path-Based Framework for Academic Knowledge Graph Question Answering*.
 
 Repo giữ lịch sử commit của baseline. Remote `upstream` trỏ về repo nền; remote `origin` trỏ về repo mở rộng. Bản khởi tạo lấy các file đã commit ở baseline; dữ liệu cục bộ và các file chưa được theo dõi không nằm trong bản khởi tạo.
+
+## Quy trình nghiên cứu Week 6–7
+
+Repo này là nơi theo dõi chính cho toàn bộ công việc Week 6–7. Bắt đầu từ [bảng theo dõi](team-synthesis/week6-week7-tracker.md); mỗi bước có vị trí lưu đầu ra, điều kiện hoàn tất và bằng chứng cần bổ sung. Đề cương hiện có là bản định hướng, chưa phải protocol đã đóng băng. Đọc tài liệu nền chưa đồng nghĩa hoàn thành literature review, xác nhận gap hoặc novelty.
+
+Đầu ra cá nhân nằm trong `SLR/<member-id>/`; đầu ra tổng hợp của nhóm nằm trong `team-synthesis/`. Mỗi quyết định đổi phạm vi, RQ hoặc thiết kế cần ghi ngày, lý do và trạng thái vào nhật ký; chỉ đánh dấu hoàn tất khi có bằng chứng truy nguyên được. Những mục còn chờ thống nhất không được tự coi là đã chốt.
 
 ## Phạm vi mở rộng
 
@@ -31,6 +40,8 @@ Graph-valid path chưa đồng nghĩa với câu trả lời được hỗ trợ
 - `src/`, `main.py`: code baseline được kế thừa, gồm BFS, DFS, Dijkstra, A*, parser và verbalizer.
 - `web/`: giao diện demo baseline.
 - `docs/`: đề cương và tài liệu nguồn gốc.
+- `SLR/`: hướng dẫn và đầu ra tổng quan tài liệu của từng thành viên.
+- `team-synthesis/`: theo dõi W6–W7, nguồn, quyết định và các đầu ra tổng hợp.
 - `manuscript/`: dành cho bản thảo mở rộng.
 - `data/raw/`, `data/processed/`: dữ liệu cục bộ, được bỏ qua bởi Git.
 
